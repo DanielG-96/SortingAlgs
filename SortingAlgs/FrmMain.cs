@@ -35,6 +35,14 @@ namespace SortingAlgs
         private void BtnBubbleSort_Click(object sender, EventArgs e)
         {
             SetNumberArrayAndShowResults();
+
+            myNumbers = Sorting.BubbleSort(myNumbers);
+            Console.WriteLine("Sorted: ");
+            foreach (int number in myNumbers)
+            {
+                Console.Write(number + " ");
+            }
+            Console.WriteLine();
         }
 
         private void BtnInsertSort_Click(object sender, EventArgs e)
@@ -70,7 +78,7 @@ namespace SortingAlgs
                     return;
                 }
                 
-                Console.WriteLine("You have entered: ");
+                Console.WriteLine("Original: ");
                 foreach(int num in myNumbers)
                 {
                     Console.Write(num + " ");

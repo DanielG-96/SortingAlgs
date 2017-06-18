@@ -50,6 +50,7 @@
             this.TxtConsole.Location = new System.Drawing.Point(0, 0);
             this.TxtConsole.Multiline = true;
             this.TxtConsole.Name = "TxtConsole";
+            this.TxtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TxtConsole.Size = new System.Drawing.Size(784, 277);
             this.TxtConsole.TabIndex = 0;
             // 
