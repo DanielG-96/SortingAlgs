@@ -13,6 +13,8 @@ namespace SortingAlgs
     public partial class FrmMain : Form
     {
         int[] myNumbers;
+        Settings settings;
+        const string SETTINGS_FILE = "settings.json";
 
         public FrmMain()
         {
@@ -21,41 +23,88 @@ namespace SortingAlgs
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            settings = Settings.LoadSettings(SETTINGS_FILE);
+            ChkAscending.Checked = settings.AscendingOrder;
+            ChkSaveNumbers.Checked = settings.RememberNumbers;
+            if(settings.RememberNumbers)
+                TxtNumbers.Text = string.Join(", ", settings.Numbers.Select(i => i.ToString()));
+
             Console.SetOut(new ControlWriter(TxtConsole));
 
             Console.WriteLine("Please enter a set of numbers into the textbox above separated by commas (',').");
             Console.WriteLine("Then select a sorting algorithm to run.");
         }
 
-        private void BtnQuickSort_Click(object sender, EventArgs e)
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SetNumberArrayAndShowResults();
+            SetNumberArray();
+            if (ChkSaveNumbers.Checked && myNumbers != null)
+                settings.Numbers = myNumbers;
+            settings.AscendingOrder = ChkAscending.Checked;
+            settings.RememberNumbers = ChkSaveNumbers.Checked;
+            Settings.SaveSettings(SETTINGS_FILE, settings);
         }
 
-        private void BtnBubbleSort_Click(object sender, EventArgs e)
+        private void BtnQuickSort_Click(object sender, EventArgs e)
         {
-            SetNumberArrayAndShowResults();
+            SetNumberArray();
 
-            myNumbers = Sorting.BubbleSort(myNumbers);
-            Console.WriteLine("Sorted: ");
-            foreach (int number in myNumbers)
+            Console.WriteLine("Original: ");
+            foreach (int num in myNumbers)
             {
-                Console.Write(number + " ");
+                Console.Write(num + " ");
             }
             Console.WriteLine();
         }
 
+        private void BtnBubbleSort_Click(object sender, EventArgs e)
+        {
+            SetNumberArray();
+
+            Console.WriteLine("Original: ");
+            foreach (int num in myNumbers)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine();
+
+            if (myNumbers != null && myNumbers.Length > 0)
+            {
+                myNumbers = Sorting.BubbleSort(myNumbers);
+                Console.WriteLine("Sorted: ");
+                foreach (int number in myNumbers)
+                {
+                    Console.Write(number + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
         private void BtnInsertSort_Click(object sender, EventArgs e)
         {
-            SetNumberArrayAndShowResults();
+            SetNumberArray();
+
+            Console.WriteLine("Original: ");
+            foreach (int num in myNumbers)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine();
         }
 
         private void BtnSelectSort_Click(object sender, EventArgs e)
         {
-            SetNumberArrayAndShowResults();
+            SetNumberArray();
+
+            Console.WriteLine("Original: ");
+            foreach (int num in myNumbers)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine();
         }
 
-        private void SetNumberArrayAndShowResults()
+        private void SetNumberArray()
         {
             if(TxtNumbers.Text.Length == 0 || TxtNumbers.Text == null)
             {
@@ -68,22 +117,13 @@ namespace SortingAlgs
                 if (myNumbers.Length < 2)
                 {
                     Console.WriteLine("Please enter at least two numbers.");
-                    myNumbers = null;
                     return;
                 }
                 if(myNumbers.Length > 10)
                 {
                     Console.WriteLine("Please enter no more than 10 numbers.");
-                    myNumbers = null;
                     return;
                 }
-                
-                Console.WriteLine("Original: ");
-                foreach(int num in myNumbers)
-                {
-                    Console.Write(num + " ");
-                }
-                Console.WriteLine();
             }
             catch(Exception ex)
             {
